@@ -4,7 +4,6 @@ import { supabase } from '@/integrations/supabase/client';
 
 export const useReferral = () => {
   const { user } = useAuth();
-  const [showReferralModal, setShowReferralModal] = useState(false);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -44,20 +43,11 @@ export const useReferral = () => {
       }
 
       setUserProfile(profile);
-
-      // Show referral modal if user hasn't been referred by anyone
-      if (!profile.referred_by) {
-        setShowReferralModal(true);
-      }
     } catch (error) {
       console.error('Error checking referral status:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const closeReferralModal = () => {
-    setShowReferralModal(false);
   };
 
   const getUserReferralCode = () => {
@@ -105,8 +95,6 @@ export const useReferral = () => {
   };
 
   return {
-    showReferralModal,
-    closeReferralModal,
     userProfile,
     loading,
     getUserReferralCode,

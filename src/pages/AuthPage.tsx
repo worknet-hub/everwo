@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -27,6 +27,9 @@ const AuthPage = () => {
   const [signInPolicyWarning, setSignInPolicyWarning] = useState('');
   const [referralCode, setReferralCode] = useState('');
   const [referralCodeWarning, setReferralCodeWarning] = useState('');
+  const [referralCodeValid, setReferralCodeValid] = useState<null | boolean>(null);
+  const [referralCodeChecking, setReferralCodeChecking] = useState(false);
+  const referralCodeTimeout = useRef<NodeJS.Timeout | null>(null);
   const { user, signIn, signUp, loading: authLoading, isAdmin } = useAuth();
   const navigate = useNavigate();
 
@@ -82,6 +85,11 @@ const AuthPage = () => {
       if (isSignUp) {
         if (!referralCode.trim()) {
           setReferralCodeWarning('Referral code is required.');
+          setLoading(false);
+          return;
+        }
+        if (referralCodeValid !== true) {
+          setReferralCodeWarning('Referral code is invalid. Please enter a valid one.');
           setLoading(false);
           return;
         }
@@ -150,6 +158,30 @@ const AuthPage = () => {
     }
   };
 
+  const handleReferralCodeChange = (value: string) => {
+    setReferralCode(value.toUpperCase());
+    setReferralCodeWarning('');
+    setReferralCodeValid(null);
+    if (referralCodeTimeout.current) clearTimeout(referralCodeTimeout.current);
+    if (!value.trim()) {
+      setReferralCodeValid(null);
+      return;
+    }
+    setReferralCodeChecking(true);
+    referralCodeTimeout.current = setTimeout(async () => {
+      // Use the new check_referral_code_exists function for real-time validation
+      const { data, error } = await supabase.rpc('check_referral_code_exists', {
+        referral_code_input: value.trim()
+      });
+      if (error || !data || data.exists !== true) {
+        setReferralCodeValid(false);
+      } else {
+        setReferralCodeValid(true);
+      }
+      setReferralCodeChecking(false);
+    }, 500);
+  };
+
   // Show loading only during initial auth check
   if (authLoading) {
     return (
@@ -213,21 +245,34 @@ const AuthPage = () => {
                             <div className="text-red-500 text-xs mt-1">{usernameWarning}</div>
                           )}
                         </div>
-                        <div className="mb-2">
-                          <Label htmlFor="referralCode">Referral Code</Label>
-                          <Input
-                            id="referralCode"
-                            type="text"
-                            value={referralCode}
-                            onChange={e => setReferralCode(e.target.value.toUpperCase())}
-                            placeholder="Enter referral code"
-                            className="mt-1"
-                          />
-                          {referralCodeWarning && (
-                            <div className="text-red-500 text-xs mt-1">{referralCodeWarning}</div>
-                          )}
-                        </div>
                       </>
+                    )}
+                    {/* Referral code field always visible and required on signup */}
+                    {isSignUp && (
+                      <div className="mb-2">
+                        <Label htmlFor="referralCode">Referral Code</Label>
+                        <Input
+                          id="referralCode"
+                          type="text"
+                          value={referralCode}
+                          onChange={e => handleReferralCodeChange(e.target.value)}
+                          placeholder="Enter referral code"
+                          className="mt-1"
+                          required
+                        />
+                        {referralCodeChecking && (
+                          <div className="text-blue-500 text-xs mt-1">Checking referral code...</div>
+                        )}
+                        {referralCodeValid === true && !referralCodeChecking && (
+                          <div className="text-green-500 text-xs mt-1">Referral code is valid!</div>
+                        )}
+                        {referralCodeValid === false && !referralCodeChecking && (
+                          <div className="text-red-500 text-xs mt-1">Referral code is invalid.</div>
+                        )}
+                        {referralCodeWarning && (
+                          <div className="text-red-500 text-xs mt-1">{referralCodeWarning}</div>
+                        )}
+                      </div>
                     )}
                     
                     <div className="space-y-2">
@@ -322,7 +367,7 @@ const AuthPage = () => {
                       <Button 
                         type="submit" 
                         className="w-full h-11 text-base rounded-xl font-medium bg-white hover:bg-gray-100 text-black mt-6" 
-                        disabled={loading || !acceptSignUpPolicy || !referralCode.trim()}
+                        disabled={loading || !acceptSignUpPolicy || !referralCode.trim() || referralCodeValid !== true}
                       >
                         {loading ? 'Please wait...' : 'Create Account'}
                       </Button>

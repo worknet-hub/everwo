@@ -106,6 +106,20 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Create function to check if a referral code exists (for real-time validation)
+CREATE OR REPLACE FUNCTION check_referral_code_exists(
+  referral_code_input TEXT
+)
+RETURNS JSON AS $$
+DECLARE
+  exists_code BOOLEAN;
+BEGIN
+  referral_code_input := upper(referral_code_input);
+  SELECT EXISTS(SELECT 1 FROM public.profiles WHERE referral_code = referral_code_input) INTO exists_code;
+  RETURN json_build_object('exists', exists_code);
+END;
+$$ LANGUAGE plpgsql;
+
 -- Update the handle_new_user function to include referral code generation
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$

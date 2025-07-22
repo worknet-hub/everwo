@@ -20,6 +20,25 @@ export const ReferralInfo = ({ userId, compact }: ReferralInfoProps) => {
 
   useEffect(() => {
     loadReferralData();
+    // Real-time subscription for referrals
+    const channel = supabase
+      .channel('referral-realtime-' + userId)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'referrals',
+          filter: `referrer_id=eq.${userId}`,
+        },
+        (payload) => {
+          loadReferralData();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [userId]);
 
   const loadReferralData = async () => {
