@@ -1,0 +1,53 @@
+{
+  "name": "Everwo",
+  "short_name": "Everwo",
+  "description": "Your student community platform - connect, share, and grow together",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "categories": ["education", "social", "networking"],
+  "lang": "en",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/everwologo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/everwologo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/everwologo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Home Feed",
+      "short_name": "Feed",
+      "url": "/",
+      "icons": [{"src": "/everwologo.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Job House",
+      "short_name": "Jobs",
+      "url": "/job-house",
+      "icons": [{"src": "/everwologo.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Messages",
+      "short_name": "Messages",
+      "url": "/messages",
+      "icons": [{"src": "/everwologo.png", "sizes": "192x192"}]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0% / 0.7;
+    --foreground: 210 40% 98%;
+    --card: 0 0% 0% / 0.7;
+    --card-foreground: 210 40% 98%;
+    --popover: 0 0% 0% / 0.7;
+    --popover-foreground: 210 40% 98%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 100%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+  }
+  body {
+    @apply bg-background text-foreground font-['Inter',sans-serif];
+    background: #000000B3;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden !important;
+}
+
+/* Debug styles - uncomment to see layout outlines */
+/* 
+.debug * {
+  outline: 1px solid red !important;
+}
+
+.debug-mobile * {
+  outline: 1px solid blue !important;
+}
+
+.debug-desktop * {
+  outline: 1px solid green !important;
+}
+*/
+
+@layer components {
+  .card-dark {
+    background: #000000B3 !important;
+    @apply border border-[#2a2f3e] rounded-xl;
+  }
+  
+  .sidebar-dark {
+    @apply bg-[#151a23] border-r border-[#2a2f3e];
+  }
+  
+  .header-dark {
+    background: #000000B3 !important;
+    @apply border-b border-[#2a2f3e];
+  }
+  
+  .input-dark {
+    @apply bg-[#1a1f2e] border border-[#2a2f3e] text-white placeholder:text-gray-400 focus:border-white;
+  }
+  
+  .button-primary {
+    @apply bg-white hover:bg-gray-100 text-black font-medium px-4 py-2 rounded-lg transition-colors;
+  }
+  
+  .button-secondary {
+    @apply bg-[#1a1f2e] hover:bg-[#2a2f3e] text-white border border-[#2a2f3e] font-medium px-4 py-2 rounded-lg transition-colors;
+  }
+  
+  .text-muted {
+    @apply text-gray-400;
+  }
+  
+  .mobile-optimized {
+    @apply px-4 py-2 mx-2;
+  }
+  
+  .glass-card {
+    background: #000000B3 !important;
+    @apply border border-[#2a2f3e] rounded-xl;
+  }
+  
+  /* Mobile specific styles */
+  @media (max-width: 768px) {
+    .mobile-card {
+      @apply mx-3 mb-4 rounded-xl;
+    }
+    
+    .mobile-header {
+      @apply px-4 py-3 border-b border-[#2a2f3e];
+    }
+    
+    .mobile-nav {
+      @apply fixed bottom-0 left-0 right-0 bg-[#151a23] border-t border-[#2a2f3e] px-2 py-2;
+    }
+    
+    .mobile-sidebar {
+      @apply w-full bg-[#151a23];
+    }
+    
+    .mobile-content {
+      @apply pb-0;
+    }
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1f2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2f3e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3f4e;
+}
