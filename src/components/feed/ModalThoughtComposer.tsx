@@ -264,13 +264,13 @@ export const ModalThoughtComposer = ({
                 disabled={uploadingImage}
               />
               {imagePreview && (
-                <div className="absolute left-0 right-0 bottom-14 flex flex-col items-center">
+                <div className="mt-4 flex flex-col items-center">
                   <img src={imagePreview} alt="Preview" className="max-h-40 rounded-lg border border-white/10 mb-2" />
                   <button onClick={handleRemoveImage} className="text-xs text-red-400 underline">Remove</button>
                 </div>
               )}
               {uploadingImage && (
-                <div className="absolute left-0 right-0 bottom-14 flex justify-center items-center">
+                <div className="mt-4 flex justify-center items-center">
                   <span className="text-xs text-gray-300 bg-black/80 px-2 py-1 rounded">Uploading...</span>
                 </div>
               )}

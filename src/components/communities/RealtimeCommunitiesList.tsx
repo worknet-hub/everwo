@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Hash, Users, TrendingUp } from 'lucide-react';
+import { Hash, Users, TrendingUp, Lock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useRealtime } from '@/hooks/useRealtime';
 import { useNavigate } from 'react-router-dom';
@@ -47,7 +47,12 @@ export const RealtimeCommunitiesList = ({
   }
 
   return (
-    <Card className="glass-card">
+    <Card className="glass-card relative">
+      {/* Blur overlay */}
+      <div className="absolute inset-0 backdrop-blur-sm bg-black/30 z-10 flex flex-col items-center justify-center">
+        <Lock className="w-8 h-8 text-white/70 mb-2" />
+        <span className="text-white/80 font-medium">Coming Soon</span>
+      </div>
       <CardHeader>
         <CardTitle className="flex items-center space-x-2 text-foreground">
           <TrendingUp className="w-5 h-5" />
@@ -58,12 +63,11 @@ export const RealtimeCommunitiesList = ({
         {communities.map((community) => (
           <div 
             key={community.id} 
-            className={`p-3 rounded-lg transition-colors cursor-pointer ${
+            className={`p-3 rounded-lg transition-colors ${
               selectedCommunity === community.name 
                 ? 'bg-primary/20 border border-primary/30' 
-                : 'bg-muted/50 hover:bg-muted'
+                : 'bg-muted/50'
             }`}
-            onClick={() => handleCommunityClick(community.name)}
           >
             <div className="flex items-start space-x-3">
               <Hash className="w-5 h-5 text-primary mt-0.5" />

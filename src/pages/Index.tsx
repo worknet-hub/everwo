@@ -3,7 +3,6 @@ import { useSearchParams, useLocation } from 'react-router-dom';
 import { EnhancedThoughtsFeed } from '@/components/feed/EnhancedThoughtsFeed';
 import { EnhancedThoughtComposer } from '@/components/feed/EnhancedThoughtComposer';
 import QuickProfile from '@/components/profile/QuickProfile';
-import TrendingSidebar from '@/components/sidebar/TrendingSidebar';
 import PeopleYouMayKnow from '@/components/sidebar/PeopleYouMayKnow';
 import { RealtimeCommunitiesList } from '@/components/communities/RealtimeCommunitiesList';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
@@ -491,9 +490,6 @@ const Index = () => {
 
             {/* Right Sidebar */}
             <div className="col-span-1 space-y-8">
-              <ErrorBoundary>
-                <TrendingSidebar onCommunitySelect={handleCommunitySelect} />
-              </ErrorBoundary>
               <ErrorBoundary>
                 <PeopleYouMayKnow />
               </ErrorBoundary>
